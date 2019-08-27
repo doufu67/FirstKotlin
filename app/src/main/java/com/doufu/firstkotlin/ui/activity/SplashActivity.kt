@@ -5,15 +5,12 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import com.doufu.firstkotlin.MainActivity
 import com.doufu.firstkotlin.MyApplication
 import com.doufu.firstkotlin.R
 import com.doufu.firstkotlin.base.BaseActivity
 import com.doufu.firstkotlin.utils.AppUtils
 import kotlinx.android.synthetic.main.activity_splash.*
 import pub.devrel.easypermissions.EasyPermissions
-import java.time.Instant
-import java.util.jar.Manifest
 
 /**
  *
