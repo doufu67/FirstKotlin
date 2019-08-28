@@ -1,10 +1,11 @@
 package com.doufu.firstkotlin.ui.fragment
 
 import android.os.Bundle
-import android.support.v7.widget.DialogTitle
 import com.doufu.firstkotlin.R
 import com.doufu.firstkotlin.base.BaseFragment
-import kotlinx.android.synthetic.main.activity_main.view.*
+import com.doufu.firstkotlin.mvp.contract.HomeContract
+import com.doufu.firstkotlin.mvp.presenter.HomePresenter
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  *
@@ -15,16 +16,28 @@ import kotlinx.android.synthetic.main.activity_main.view.*
  * @Author: lixindong
  * @CreateDate: 2019/8/27 10:26
  */
-class HomeFragment:BaseFragment() {
+class HomeFragment:BaseFragment() ,HomeContract.View{
+
+    private val mPresenter by lazy { HomePresenter() }
 
     private var mTitle:String?=null
+
+    private var isRefresh=false
+
+    private var num:Int=1
 
     override fun lazyLoad() {
     }
 
-    override fun getLayoutId(): Int= R.layout.activity_main
+    override fun getLayoutId(): Int= R.layout.fragment_home
 
     override fun initView() {
+        mPresenter.attachView(this)
+        mRefreshLayout.setEnableHeaderTranslationContent(true)
+        mRefreshLayout.setOnRefreshListener{
+            isRefresh=true
+            mPresenter.requestHomeData(num)
+        }
     }
     companion object{
         fun getInstance(title:String):HomeFragment{
@@ -35,4 +48,11 @@ class HomeFragment:BaseFragment() {
             return fragment
         }
     }
+
+    override fun showLoading() {
+    }
+
+    override fun dismissLoading() {
+    }
+
 }
