@@ -3,6 +3,9 @@ package com.doufu.firstkotlin.mvp.presenter
 import com.doufu.firstkotlin.base.BasePresenter
 import com.doufu.firstkotlin.mvp.contract.HomeContract
 import com.doufu.firstkotlin.mvp.model.HomeModel
+import com.doufu.firstkotlin.mvp.model.bean.HomeBean
+
+import com.doufu.firstkotlin.net.exception.ExceptionHandle
 
 /**
  *
@@ -16,12 +19,50 @@ import com.doufu.firstkotlin.mvp.model.HomeModel
 class HomePresenter :BasePresenter<HomeContract.View>(),HomeContract.Presenter{
 
     private val homeModel by lazy{HomeModel()}
+    private var bannerHomeBean:HomeBean?=null
+    private var nextPageUrl: String? =null
 
     override fun requestHomeData(num: Int) {
         checkViewAttached()
         mRootView?.showLoading()
-        val disposable=homeModel
+        val disposable=homeModel.requestHomeData(num)
+            .flatMap{
+                homeBean->
+                val bannerItemList=homeBean.issueList[0].itemList
+                bannerItemList.filter { item ->
+                    item.type=="banner2"|| item.type=="horizontalScrollCard"
+                }.forEach{item->
+                bannerItemList.remove(item)
+                }
+                bannerHomeBean=homeBean
+                homeModel.loadMoreData(homeBean.nextPageUrl)
+            }.subscribe({homeBean->
+                mRootView?.apply {
+                    dismissLoading()
+                    nextPageUrl=homeBean.nextPageUrl
+                    val newBannerItemList=homeBean.issueList[0].itemList
+                    newBannerItemList.filter { item ->
+                        item.type=="banner2"||item.type=="horizontalScrollCard"
+                    }.forEach{ item ->
+                        //移除 item
+                        newBannerItemList.remove(item)
+                    }
+                    bannerHomeBean!!.issueList[0].count=bannerHomeBean!!.issueList[0].itemList.size
+                    bannerHomeBean?.issueList!![0].itemList.addAll(newBannerItemList)
+                    setHomeData(bannerHomeBean!!)
+                }
+
+            },{
+                t->
+                mRootView?.apply {
+                    dismissLoading()
+                    showError(ExceptionHandle.handleException(t),ExceptionHandle.errorCode)
+                }
+            })
+        addSubscription(disposable)
 
     }
+
+
 
 }

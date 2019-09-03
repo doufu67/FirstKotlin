@@ -12,28 +12,31 @@ import org.reactivestreams.Publisher
  * @Author: lixindong
  * @CreateDate: 2019/8/28 11:25
  */
-class BaseScheduler<T> protected constructor(private  val subscribeOnScheduler: Scheduler,
+open class BaseScheduler<T> protected constructor(private  val subscribeOnScheduler: Scheduler,
                                              private val observeOnScheduler: Scheduler):ObservableTransformer<T,T> ,
+    //Transformer，顾名思义是转换器的意思
     SingleTransformer<T, T>,
     MaybeTransformer<T, T>,
     CompletableTransformer,
     FlowableTransformer<T, T>
 {
     override fun apply(upstream: Observable<T>): ObservableSource<T> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return upstream.subscribeOn(subscribeOnScheduler)
+            .observeOn(observeOnScheduler)
     }
 
     override fun apply(upstream: Single<T>): SingleSource<T> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return upstream.subscribeOn(subscribeOnScheduler)
+            .observeOn(observeOnScheduler)
     }
 
     override fun apply(upstream: Maybe<T>): MaybeSource<T> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        return upstream.subscribeOn(subscribeOnScheduler)
+            .observeOn(observeOnScheduler)    }
 
     override fun apply(upstream: Completable): CompletableSource {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        return upstream.subscribeOn(subscribeOnScheduler)
+            .observeOn(observeOnScheduler)    }
 
     override fun apply(upstream: Flowable<T>): Publisher<T> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

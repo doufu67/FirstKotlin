@@ -4,7 +4,9 @@ import android.os.Bundle
 import com.doufu.firstkotlin.R
 import com.doufu.firstkotlin.base.BaseFragment
 import com.doufu.firstkotlin.mvp.contract.HomeContract
+import com.doufu.firstkotlin.mvp.model.bean.HomeBean
 import com.doufu.firstkotlin.mvp.presenter.HomePresenter
+import com.doufu.firstkotlin.ui.adapter.HomeAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomeFragment:BaseFragment() ,HomeContract.View{
 
+    private var mHomeAdapter: HomeAdapter? = null
     private val mPresenter by lazy { HomePresenter() }
 
     private var mTitle:String?=null
@@ -54,5 +57,11 @@ class HomeFragment:BaseFragment() ,HomeContract.View{
 
     override fun dismissLoading() {
     }
+    override fun setHomeData(homeBean: HomeBean) {
+        mLayoutStatusView?.showContent()
 
+    }
+
+    override fun showError(msg: String, errorCode: Int) {
+    }
 }

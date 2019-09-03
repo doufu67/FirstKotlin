@@ -2,7 +2,9 @@ package com.doufu.firstkotlin.mvp.model
 
 import com.doufu.firstkotlin.mvp.model.bean.HomeBean
 import com.doufu.firstkotlin.net.RetrofitManager
-import java.util.*
+import com.doufu.firstkotlin.rx.scheduler.SchedulerUtils
+import io.reactivex.Observable
+
 
 /**
  *
@@ -15,9 +17,15 @@ import java.util.*
  */
 class HomeModel {
 
-    fun requestHomeData(num:Int):Observable<HomeBean>{
+    fun requestHomeData(num:Int): Observable<HomeBean> {
         return RetrofitManager.service.getFirstHomeData(num)
-            .compose()
+            .compose(SchedulerUtils.ioToMain())
+
+    }
+
+    fun loadMoreData(nextPageUrl: String): Observable<HomeBean> {
+        return RetrofitManager.service.getMoreHomeData(nextPageUrl)
+            .compose(SchedulerUtils.ioToMain())
 
     }
 

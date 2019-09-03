@@ -10,5 +10,7 @@ package com.doufu.firstkotlin.rx.scheduler
  * @CreateDate: 2019/8/28 11:24
  */
 object SchedulerUtils {
-    fun<T> ioToMain():IoMi
+    fun<T> ioToMain():IoMainScheduler<T>{
+        return IoMainScheduler()
+    }
 }
