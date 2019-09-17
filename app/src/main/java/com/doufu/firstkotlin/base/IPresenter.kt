@@ -1,6 +1,6 @@
 package com.doufu.firstkotlin.base
 
-import android.view.View
+
 
 /**
  *
@@ -15,4 +15,5 @@ interface IPresenter<in V:IBaseView> {
     fun attachView(mRootView: V)
 
     fun detachView()
+
 }

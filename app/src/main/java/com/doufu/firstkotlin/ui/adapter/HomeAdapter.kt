@@ -1,14 +1,20 @@
 package com.doufu.firstkotlin.ui.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import cn.bingoogolapple.bgabanner.BGABanner
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.doufu.firstkotlin.Constants
 import com.doufu.firstkotlin.R
 
 import com.doufu.firstkotlin.mvp.model.bean.HomeBean
+import com.doufu.firstkotlin.ui.activity.VideoDetailActivity
 import com.doufu.firstkotlin.view.recyclerview.ViewHolder
 import com.doufu.firstkotlin.view.recyclerview.adapter.CommonAdapter
+import com.hazz.kotlinmvp.glide.GlideApp
 import io.reactivex.Observable
 
 class HomeAdapter (context: Context,data: ArrayList<HomeBean.Issue.Item>): CommonAdapter<HomeBean.Issue.Item>(context,data,-1) {
@@ -71,14 +77,24 @@ class HomeAdapter (context: Context,data: ArrayList<HomeBean.Issue.Item>): Commo
                         setAutoPlayAble(bannerFeedList.size>1)
                         setData(bannerFeedList,bannerTitleList)
                         setAdapter{banner, _, feedImageUrl, position ->
-
-
+                         GlideApp.with(mContext)
+                             .load(feedImageUrl)
+                             .transition(DrawableTransitionOptions().crossFade())
+                             .placeholder(R.drawable.placeholder_banner)
+                             .into(banner.getItemImageView(position))
                         }
                     }
+                }
+                //设置Banner的点击事件
+                holder.getView<BGABanner>(R.id.banner).setDelegate{ _,imageView,_, i ->
+                    goToVideoPlayer(mContext as Activity,imageView,bannerItemData[i])
                 }
             }
         }
     }
+
+
+
     /**
      *  创建布局
      */
@@ -101,5 +117,8 @@ class HomeAdapter (context: Context,data: ArrayList<HomeBean.Issue.Item>): Commo
         val view = mInflater?.inflate(mLayoutId, parent, false)
         return view ?: View(parent.context)
     }
+    private fun goToVideoPlayer(activity: Activity, view: View, item: HomeBean.Issue.Item) {
 
+
+    }
 }

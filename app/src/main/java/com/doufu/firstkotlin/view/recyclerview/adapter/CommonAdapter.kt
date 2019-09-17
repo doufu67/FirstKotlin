@@ -72,4 +72,6 @@ abstract class CommonAdapter <T>(var  mContext:Context,var mData:ArrayList<T>,
         this.mItemLongClickListener = itemLongClickListener
     }
 
+
+
 }

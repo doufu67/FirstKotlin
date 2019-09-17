@@ -1,5 +1,7 @@
 package com.doufu.firstkotlin.mvp.model.bean
 
+import java.io.Serializable
+
 /**
  *
  * @ProjectName: FirstKotlin
@@ -9,161 +11,103 @@ package com.doufu.firstkotlin.mvp.model.bean
  * @Author: lixindong
  * @CreateDate: 2019/8/28 10:31
  */
-data class HomeBean (
-    val dialog: Any,
-    val issueList: ArrayList<Issue>,
-    val newestIssueType: String,
-    val nextPageUrl: String,
-    val nextPublishTime: Long
-) {
-    data class Issue(
-        var count: Int,
-        val date: Long,
-        val itemList: ArrayList<Item>,
-        val publishTime: Long,
-        val releaseTime: Long,
-        val type: String
-    ){
+/**
+ * Created by xuhao on 2017/11/21.
+ * desc: 首页 Bean（视频详情，相关等）
+ */
+data class HomeBean(val issueList: ArrayList<Issue>, val nextPageUrl: String, val nextPublishTime: Long, val newestIssueType: String, val dialog: Any){
 
-        data class Item(
-            val `data`: Data,
-            val adIndex: Int,
-            val id: Int,
-            val tag: Any,
-            val type: String
-        ){
-            data class Data(
-                val ad: Boolean,
-                val adTrack: Any,
-                val author: Author,
-                val campaign: Any,
-                val category: String,
-                val collected: Boolean,
-                val consumption: Consumption,
-                val cover: Cover,
-                val dataType: String,
-                val date: Long,
-                val description: String,
-                val descriptionEditor: String,
-                val descriptionPgc: Any,
-                val duration: Int,
-                val favoriteAdTrack: Any,
-                val id: Int,
-                val idx: Int,
-                val ifLimitVideo: Boolean,
-                val label: Any,
-                val labelList: ArrayList<Any>,
-                val lastViewTime: Any,
-                val library: String,
-                val playInfo: ArrayList<PlayInfo>,
-                val playUrl: String,
-                val played: Boolean,
-                val playlists: Any,
-                val promotion: Any,
-                val provider: Provider,
-                val releaseTime: Long,
-                val remark: Any,
-                val resourceType: String,
-                val searchWeight: Int,
-                val shareAdTrack: Any,
-                val slogan: Any,
-                val src: Any,
-                val subtitles: ArrayList<Any>,
-                val tags: ArrayList<Tag>,
-                val thumbPlayUrl: Any,
-                val title: String,
-                val titlePgc: Any,
-                val type: String,
-                val waterMarks: Any,
-                val webAdTrack: Any,
-                val webUrl: WebUrl
-            ){
-                data class Provider(
-                    val alias: String,
-                    val icon: String,
-                    val name: String
-                )
-                data class PlayInfo(
-                    val height: Int,
-                    val name: String,
-                    val type: String,
-                    val url: String,
-                    val urlList: ArrayList<Url>,
-                    val width: Int
-                ){
-                    data class Url(
-                        val name: String,
-                        val size: Int,
-                        val url: String
-                    )
+    data class Issue(val releaseTime:Long, val type:String, val date:Long, val total:Int, val publishTime:Long, val itemList:ArrayList<Item>, var count:Int, val nextPageUrl:String){
 
+        data class Item(val type: String, val data: Data?, val tag: String) : Serializable {
+
+            data class Data(val dataType: String,
+                            val text: String,
+                            val videoTitle: String,
+                            val id: Long,
+                            val title: String,
+                            val slogan: String?,
+                            val description: String,
+                            val actionUrl: String,
+                            val provider: Provider,
+                            val category: String,
+                            val parentReply: ParentReply,
+                            val author: Author,
+                            val cover: Cover,
+                            val likeCount:Int,
+                            val playUrl: String,
+                            val thumbPlayUrl: String,
+                            val duration: Long,
+                            val message: String,
+                            val createTime:Long,
+                            val webUrl: WebUrl,
+                            val library: String,
+                            val user: User,
+                            val playInfo: ArrayList<PlayInfo>?,
+                            val consumption: Consumption,
+                            val campaign: Any,
+                            val waterMarks: Any,
+                            val adTrack: Any,
+                            val tags: ArrayList<Tag>,
+                            val type: String,
+                            val titlePgc: Any,
+                            val descriptionPgc: Any,
+                            val remark: String,
+                            val idx: Int,
+                            val shareAdTrack: Any,
+                            val favoriteAdTrack: Any,
+                            val webAdTrack: Any,
+                            val date: Long,
+                            val promotion: Any,
+                            val label: Any,
+                            val labelList: Any,
+                            val descriptionEditor: String,
+                            val collected: Boolean,
+                            val played: Boolean,
+                            val subtitles: Any,
+                            val lastViewTime: Any,
+                            val playlists: Any,
+                            val header: Header,
+                            val itemList:ArrayList<HomeBean.Issue.Item>
+            ) : Serializable {
+                data class Tag(val id: Int, val name: String, val actionUrl: String, val adTrack: Any) : Serializable
+
+                data class Author(val icon: String, val name: String, val description: String) : Serializable
+
+                data class Provider(val name: String, val alias: String, val icon: String) : Serializable
+
+                data class Cover(val feed: String, val detail: String,
+                                 val blurred: String, val sharing: String, val homepage: String) : Serializable
+
+                data class WebUrl(val raw: String, val forWeibo: String) : Serializable
+
+                data class PlayInfo(val name: String, val url: String, val type: String,val urlList:ArrayList<Url>) :
+                    Serializable
+
+                data class Consumption(val collectionCount: Int, val shareCount: Int, val replyCount: Int) :
+                    Serializable
+
+                data class User(val uid: Long, val nickname: String, val avatar: String, val userType: String, val ifPgc: Boolean) :
+                    Serializable
+
+                data class ParentReply(val user: User, val message: String) : Serializable
+
+                data class Url(val size: Long) : Serializable
+
+                data class Header(val id: Int,val icon: String,val iconType: String,val description: String,val title: String,val font: String,val cover: String,val label: Label,
+                                  val actionUrl: String ,val subtitle:String, val labelList: ArrayList<Label>):
+                    Serializable {
+                    data class Label(val text: String,val card: String,val detial: Any,val actionUrl: Any)
                 }
 
-                data class WebUrl(
-                    val forWeibo: String,
-                    val raw: String
-                )
-                data class Tag(
-                    val actionUrl: String,
-                    val adTrack: Any,
-                    val bgPicture: String,
-                    val childTagIdList: Any,
-                    val childTagList: Any,
-                    val communityIndex: Int,
-                    val desc: String,
-                    val headerImage: String,
-                    val id: Int,
-                    val name: String,
-                    val tagRecType: String
-                )
-
-                data class Consumption(
-                    val collectionCount: Int,
-                    val replyCount: Int,
-                    val shareCount: Int
-                )
-
-                data class Author(
-                    val adTrack: Any,
-                    val approvedNotReadyVideoCount: Int,
-                    val description: String,
-                    val expert: Boolean,
-                    val follow: Follow,
-                    val icon: String,
-                    val id: Int,
-                    val ifPgc: Boolean,
-                    val latestReleaseTime: Long,
-                    val link: String,
-                    val name: String,
-                    val recSort: Int,
-                    val shield: Shield,
-                    val videoNum: Int
-                ){
-                    data class Shield(
-                        val itemId: Int,
-                        val itemType: String,
-                        val shielded: Boolean
-                    )
-                    data class Follow(
-                        val followed: Boolean,
-                        val itemId: Int,
-                        val itemType: String
-                    )
-                }
-
-                data class Cover(
-                    val blurred: String,
-                    val detail: String,
-                    val feed: String,
-                    val homepage: String,
-                    val sharing: Any
-                )
             }
         }
+
+
     }
+
+
 }
-
-
 
 
 

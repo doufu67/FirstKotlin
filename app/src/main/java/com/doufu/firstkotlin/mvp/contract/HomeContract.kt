@@ -22,10 +22,12 @@ interface HomeContract {
          * 显示错误信息
          */
         fun showError(msg: String,errorCode:Int)
+
+        fun setMoreData(itemList: ArrayList<HomeBean.Issue.Item>)
     }
     interface Presenter{
         fun requestHomeData(num: Int)
-
+        fun loadMoreData()
 
 
     }

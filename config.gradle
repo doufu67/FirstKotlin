@@ -45,5 +45,6 @@ ext{
     networkLibs = retrofit.values()
     rxJavaLibs = rxJava.values()
     otherLibs = [glide]
-
+    // APT
+    annotationProcessorLibs =[glideCompiler]
 }
